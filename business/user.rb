@@ -79,16 +79,19 @@ class User < Base
 		!has_warn?("new-password","changePassword-form")
 	end
 	def valid_confirm_pwd(new_pwd,confirm_pwd)
-		update_info_by_typename("vo.newPasswd",new_pwd)
-		@wait.until{@driver.find_element(:id,"repeat-password")}.send_keys confirm_pwd
-		save_pwd
+		set_new_pwd_and_confirm_pwd(new_pwd,confirm_pwd)
 		!has_warn?("repeat-password","changePassword-form")
 	end
 	def update_pwd(pwd,confirm_pwd)
 		update_info_by_typename("vo.loginPasswd",pwd)
-		valid_confirm_pwd(confirm_pwd,confirm_pwd)
+		set_new_pwd_and_confirm_pwd(confirm_pwd,confirm_pwd)
+		!has_warn?("new-password","changePassword-form")
 	end
-
+	def set_new_pwd_and_confirm_pwd(new_pwd,confirm_pwd)
+		update_info_by_typename("vo.newPasswd",new_pwd)
+		@wait.until{@driver.find_element(:id,"repeat-password")}.send_keys confirm_pwd
+		save_pwd
+	end
 	def save_update
 		@wait.until{@driver.find_element(:id,"saveBaseMsg")}.click
 	end
