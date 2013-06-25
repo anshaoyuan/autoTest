@@ -1,3 +1,4 @@
+#encoding:utf-8
 module Common
 	def jump_to_my_space
 		a_link =@wait.until{ @driver.find_element(:id,"right_userName") }
@@ -72,4 +73,41 @@ module Common
 		end
 		
 	end
+	def set_option_to_input_by_search(member_array,div_id)
+		return if member_array.nil?
+			begin
+				tag_input = @wait.until{@driver.find_element(:css,"##{div_id} ul li input.default")}
+				tag_input.clear
+				member_array.each do |tag|
+					tag_input.send_keys tag
+					search_btn = @wait.until{@driver.find_element(:css,"##{div_id} ul li a")}
+					search_btn.click
+					wait(3)
+					tag_list = @wait.until{@driver.find_elements(:css,"##{div_id} div ul li")}
+					if tag_list.length>0
+						tag_list[0].click
+						@log.info("#{tag} add successfully")
+					else
+						@log.error("查不到标签")
+					end
+				end
+			rescue Exception => e
+				@log.error("出现异常，考虑是否是因为多个标签选择的问题!")
+				raise e
+			end
+	end
+	def change_login(login_name,pwd)
+        @wait.until{@driver.find_element(:id,"username")}.click
+        @wait.until{@driver.find_element(:id,"changeUserId")}.click
+        username = @wait.until{@driver.find_element(:id,"signin-email")}
+        username.clear
+        username.send_keys login_name
+        userpwd = @wait.until{@driver.find_element(:id,"signin-password")}
+        userpwd.clear
+        userpwd.send_keys pwd
+        @driver.find_element(:id,"loginBtn").click
+        wait(5)
+    	change_panel_class = @driver.find_element(:id,"switcher").attribute("class")
+    	!change_panel_class.include?("in")
+    end
 end

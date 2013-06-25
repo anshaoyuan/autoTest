@@ -1,9 +1,10 @@
 # encoding: utf-8
 class Config_Option
 	#LOGIN_URL="http://www.findest.com.cn/webStream!index.action"
-	BASE_URL="http://192.168.16.45:8090/sloth/"
+	BASE_URL="http://192.168.16.7:8090/sloth/"
 	LOGIN_URL=BASE_URL+"webStream!index.action"
-	
+	#跳转到专页页面
+	COUSTOM_PAGE_URL=BASE_URL+"webDiy!showPage.action"
 	LoginName="tanzq@visionet.com.cn"
 	LoginPWD="tanzhiqiang"
 	OTHER_USER_INFO={login_name:LoginName,pwd:LoginPWD,name:"谭志强",id:"310"}
@@ -91,5 +92,12 @@ class Config_Option
 
 	RIGHT_PWD_CONFIRM="123456"
 	NEW_PWD = "1234567"
+
+	SET_COUSTOME_TO_MAIN_PAGE = "将专页设为我的首页"
+	
+	CANCEL_COUSTOM_TO_MAIN_PAGE = "取消专页设为我的首页"
+	COUSTOM_TEAM_INFO ="上海微企信息技术有限公司"
+	COUSTOM_VEST_INFO = "刘顺顺"
+	COUSTOM_TAG_INFO ="test"
 end
 

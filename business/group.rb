@@ -123,22 +123,7 @@ class Group < Base
 	end
 	def set_team_tag(need_tag,tags)
 		if need_tag
-			begin
-				tag_input = @wait.until{@driver.find_element(:css,"#teamTags_chzn ul li input.default")}
-				tag_input.clear
-				tags.each do |tag|
-					tag_input.send_keys tag
-					search_btn = @wait.until{@driver.find_element(:css,"#teamTags_chzn ul li a")}
-					search_btn.click
-					wait(3)
-					tag_list = @wait.until{@driver.find_elements(:css,"#teamTags_chzn div ul li")}
-					tag_list[0].click
-					@log.info("#{tag} add successfully")
-				end
-			rescue Exception => e
-				@log.error("出现异常，考虑是否是因为多个标签选择的问题!")
-				raise e
-			end
+			set_option_to_input_by_search(tags,"teamTags_chzn")
 		end
 	end
 
