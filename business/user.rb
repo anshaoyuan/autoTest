@@ -112,6 +112,8 @@ class User < Base
 		update_info_by_typename(name,for_update)
 		is_valid?(id,form_id,color)&&is_update?(name,for_update)
 	end
+
+	private
 	def is_valid?(id,form_id,color=nil)
 		disappear_message
 		save_update
