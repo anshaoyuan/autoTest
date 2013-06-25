@@ -125,5 +125,11 @@ describe User do
 			@user.update_pwd(Config_Option::LOGIN_INFO[:pwd],Config_Option::NEW_PWD).should be_true
 			@user.update_pwd(Config_Option::NEW_PWD,Config_Option::LOGIN_INFO[:pwd]).should be_true
 		end
+		
+	end
+	describe "change user" do
+		it "should be true when change login",level1:true do
+			@user.change_login(Config_Option::LOGIN_INFO[:login_name],Config_Option::LOGIN_INFO[:pwd]).should be_true
+		end
 	end
 end
