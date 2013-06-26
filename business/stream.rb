@@ -4,11 +4,12 @@ require 'time'
 require_relative 'config_option'
 require_relative 'common/common_module'
 require_relative 'common/alert_message'
+require_relative 'common/stream_module'
 class Stream < Base
 	attr_accessor :content,:title
 	include Common
 	include Message
-
+	include Stream_Module
 	def initialize(login_info = Config_Option::LOGIN_INFO)
 		super(login_info)
 		@currDate = Time.now.strftime("%Y-%m-%d%H:%M:%S")+"_autotest"
@@ -130,6 +131,10 @@ class Stream < Base
 		get_first_title.click
 		@wait.until{@driver.find_elements(:css,"#stream-panel ul li.article-item.clearfix.stream-item")[0]}
 	end
+	def get_first_stream_by_store
+		show_my_store_stream
+		@wait.until{@driver.find_elements(:css,"#my-store ul li.article-item.clearfix.stream-item")[0]}
+	end
 	private
 	def compare_stream_content_from_streamli(li,content)
 		compare_stream = li.find_element(:css,"div.old-stream-lxj.streamContent-p").text
@@ -144,8 +149,6 @@ class Stream < Base
 		schedule_btn = @driver.find_element(:id,"schedule-btn")
 		schedule_btn.click
 		activeDiv = @driver.find_element(:id,"add-calendar")
-		#activeDate =activeDiv.find_element(:name,"vo.activity.startTime")
-		#activeDate.send_keys Config_Option::ACTIVE_DATE
 		time_btn = activeDiv.find_element(:css,"#choose-date span.add-on")
 		time_btn.click
 		wait(1)
@@ -155,9 +158,6 @@ class Stream < Base
 		curr_date.click
 		activeDiv.find_element(:name,"vo.activity.place").send_keys Config_Option::ACTIVE_PLACE
 		activeDiv.find_element(:css,"#schedule_members_chzn ul li input.default").click
-
-		#firstMember = @wait.until{activeDiv.find_element(:id,"schedule_members_chzn_o_0")}
-		#firstMember.click
 		set_option_to_input(members,"schedule_members_chzn")
 
 		activeMinute = activeDiv.find_element(:id,"schedule-minute-in")

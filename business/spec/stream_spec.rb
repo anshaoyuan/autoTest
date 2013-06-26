@@ -1,6 +1,5 @@
+#encoding:utf-8
 require 'spec_helper'
-
-	
 
 describe Stream do
 	before(:all){@stream=Stream.new}
@@ -34,6 +33,24 @@ describe Stream do
 	describe "delete stream from user share" do
 		it "should delete stream" do
 			@stream.delete_stream.should be_true
+		end
+	end
+	describe "store stream" do
+		it "should be true when store a stream " do
+			first_stream = @stream.get_first_title_first_stream
+			@stream.store_stream(first_stream).should be_true
+		end
+		it "should be true when store a new stream by other user release" do 
+			@stream.release_stream("测试收藏")
+			stream_for_store = Stream.new(Config_Option::OTHER_USER_INFO)
+			first_stream = stream_for_store.get_first_title_first_stream
+			first_stream_content = first_stream.text
+			
+			stream_for_store.store_stream(first_stream).should be_true
+			first_store_stream = stream_for_store.get_first_stream_by_store
+			first_store_stream_content = first_store_stream.text
+			stream_for_store.closeDriver
+			first_store_stream_content.include?(first_stream_content).should be_true 
 		end
 	end
 

@@ -30,6 +30,12 @@ module Common
 		my_talk.click
 		wait(3)
 	end
+	def show_my_store_stream
+		jump_to_my_space
+		my_store = @wait.until{@driver.find_element(:id,"mystore-lxj")}
+		my_store.click
+		wait(3)
+	end
 	def get_option_from_component_by_name(component_id,name)
 		component = @wait.until{@driver.find_element(:id,component_id)}
 		show_team_a = component.find_element(:tag_name,"a")
