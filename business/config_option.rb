@@ -1,7 +1,7 @@
 # encoding: utf-8
 class Config_Option
 	#LOGIN_URL="http://www.findest.com.cn/webStream!index.action"
-	BASE_URL="http://192.168.16.7:8090/sloth/"
+	BASE_URL="http://192.168.16.45:8090/sloth/"
 	LOGIN_URL=BASE_URL+"webStream!index.action"
 	#跳转到专页页面
 	COUSTOM_PAGE_URL=BASE_URL+"webDiy!showPage.action"

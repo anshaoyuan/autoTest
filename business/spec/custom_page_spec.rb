@@ -13,8 +13,8 @@ describe CustomPage do
 	end
 	it "should be true when add config by type",level2:true do
 		@custom.goto_my_coustom_page
-		#@custom.add_config_by_type("添加群组",Config_Option::COUSTOM_TEAM_INFO).should be_true
-		#@custom.add_config_by_type("添加用户",Config_Option::COUSTOM_VEST_INFO).should be_true
+		@custom.add_config_by_type("添加群组",Config_Option::COUSTOM_TEAM_INFO).should be_true
+		@custom.add_config_by_type("添加用户",Config_Option::COUSTOM_VEST_INFO).should be_true
 		@custom.add_config_by_type("添加标签",Config_Option::COUSTOM_TAG_INFO).should be_true
 
 	end
