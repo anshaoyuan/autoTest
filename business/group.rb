@@ -2,11 +2,11 @@
 require_relative 'core/base'
 require 'time'
 require_relative 'config_option'
-require_relative 'common/common_module'
+require_relative 'common/team_module'
 require_relative 'common/alert_message'
 
 class Group < Base
-	include Common
+	include TeamModule
 	include Message
 	def joinGroup
 	  @driver.get Config_Option::TEAM_ALL_URL
@@ -157,21 +157,7 @@ class Group < Base
 		curr = getrandom+"_auto_team"
 		team_info={"name"=>curr,"desc"=>curr,"team_type"=>3,"release_stream_need_tag"=>true,"need_private_title"=>true,"members"=>[Config_Option::VEST_NAME,Config_Option::VEST_NAME_LIUSS],"add_tag"=>true,"tags"=>[]}
 	end
-	def get_team_create_by_myself_last
-		get_my_teams[0]
-	end
-	def get_my_teams
-		show_my_teams
-		my_teams = @wait.until{@driver.find_elements(:css,"#collapseOne div li")}
-	end
-	def show_my_teams
-		goto_main_page
-		jump_to_my_space
-		my_team = @wait.until{@driver.find_element(:css,"#myteam-lxj a")}
-		my_team.click
-		create_by_myself_team=@wait.until{@driver.find_element(:css,"#accordion2 div div a.accordion-toggle")}	
-		create_by_myself_team.click
-	end
+
 	def add_team_to_main_page
 		show_my_teams
 		begin

@@ -99,5 +99,11 @@ class Config_Option
 	COUSTOM_TEAM_INFO ="上海微企信息技术有限公司"
 	COUSTOM_VEST_INFO = "刘顺顺"
 	COUSTOM_TAG_INFO ="test"
+
+	WRONG_TEAM_NAME_WITH_SPECIAL_CHAR = "<a>www.test.com</a>"
+	WRONG_TEAM_NAME_WITH_LONG_DESCRIBE="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
+	RIGHT_TEAM_DESCRIBE ="群组简介"
+	WRONG_TEAM_DESCRIBE_WITH_LOGN_DESCRIBE="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 end
 

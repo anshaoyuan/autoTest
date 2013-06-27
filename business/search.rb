@@ -8,26 +8,12 @@ class Search < Base
 	#include Common
 	include User_Module
 	
-	def search_stream(search_content)
-		search_input = clear_top_search_input
-		search_input.send_keys search_content
-		search_btn = @driver.find_element(:id,"search-query")
-		search_btn.click
-		
-	end
-	def clear_top_search_input
-		
-		search_input =@wait.until { @driver.find_element(:css,"#top div div div input.pull-left")}
-		
-		search_input.clear
-		search_input
-	end
+
 	def search_stream_by_content(search_content)
 		goto_main_page
 		search_stream search_content
 		result = get_record_count_for_stream
-		#puts result
-		if result.eql?"0条"
+		if result.eql?"0"
 			@log.error("search fail or release fails")
 			false
 		else
@@ -142,7 +128,7 @@ class Search < Base
 		goto_search
 		begin
 		record_count = get_record_count_for_stream
-		result =(!record_count.eql?"0条" == have_reslut_from_stream_div_by_condition?)
+		result =(!record_count.eql?"0" == have_reslut_from_stream_div_by_condition?)
 		rescue Exception =>e
 			@log.info("#{message} fail,Exception info #{e.message}")
 			raise e
@@ -155,18 +141,18 @@ class Search < Base
 		goto_main_page
 		search_btn = @wait.until{@driver.find_element(:id,"search-query")}
 		search_btn.click
-		high_grade_link_div = @wait.until {@driver.find_element(:id,"a_search_div")}			
-		high_grade_btn = high_grade_link_div.find_element(:tag_name,"a")
-		high_grade_btn.click
+		#high_grade_link_div = @wait.until {@driver.find_element(:id,"a_search_div")}			
+		#high_grade_btn = high_grade_link_div.find_element(:tag_name,"a")
+		#high_grade_btn.click
 	end
 
 	def goto_search
-		search_btn= @wait.until{@driver.find_element(:id,"searchbtn")}
+		search_btn= @wait.until{@driver.find_element(:id,"search_submit")}
 		search_btn.click	
 	end
 
 	def get_record_count_for_stream
-		result = @wait.until{@driver.find_element(:css,"#search-stream-result h5 small strong").text}
+		result = @wait.until{@driver.find_element(:id,"search_result_count").text}
 	end
 	def get_record_count_for_vest
 		result = @wait.until{@driver.find_element(:css,"#search-vest-result h5 small strong").text}
@@ -176,8 +162,13 @@ class Search < Base
 		result = @wait.until{@driver.find_element(:css,"#search-team-result h5 small strong").text}
 	end
 	def have_reslut_from_stream_div_by_condition?
-		li = @wait.until{@driver.find_elements(:css,"#search-stream-list ul li")[0]}
-		!li.text.include?"没有搜索到相关的博文信息! "
+		
+		begin
+			@wait.until{@driver.find_elements(:css,"#search_result ul li.article-item.clearfix.stream-item")}
+			true
+		rescue Exception => e
+			false
+		end
 	end
 	def have_result_from_vest_div_by_condition?
 		div = @wait.until{@driver.find_element(:css,"#search-user-list ul div")}
@@ -186,6 +177,19 @@ class Search < Base
 	def have_result_from_team_div_by_condition?
 		div = @wait.until{@driver.find_element(:css,"#search-team-list ul div")}
 		!div.text.include?"没有搜索到相关的群组信息!"
+	end
+	private
+	def search_stream(search_content)
+		search_input = clear_top_search_input
+		search_input.send_keys search_content
+		search_btn = @driver.find_element(:id,"search-query")
+		search_btn.click
+		
+	end
+	def clear_top_search_input
+		search_input =@wait.until { @driver.find_element(:css,"#top div div div input.pull-left")}
+		search_input.clear
+		search_input
 	end
 end
 

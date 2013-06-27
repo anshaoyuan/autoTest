@@ -116,4 +116,13 @@ module Common
     	change_panel_class = @driver.find_element(:id,"switcher").attribute("class")
     	!change_panel_class.include?("in")
     end
+    def update_info_by_typename(name,info)
+		typename = @wait.until{@driver.find_element(:name,name)}
+		typename.clear
+		typename.send_keys info
+	end
+	def is_update?(name,info)
+		wait(3)
+		@wait.until{@driver.find_element(:name,name)}.attribute("value").eql?info
+	end
 end

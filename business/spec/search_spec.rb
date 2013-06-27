@@ -21,6 +21,7 @@ describe Search do
 		it "should be true when search stream by tag name" do
 			@search.search_stream_by_tagname("txt").should be_true
 		end
+=begin		
 		it "should be true when search stream by start date" do 
 			pending "date search is wrong" do
 			@search.search_stream_by_start_date.should be_true
@@ -31,6 +32,7 @@ describe Search do
 			@search.search_stream_by_end_date
 			end
 		end
+=end		
 		it "should be true when search stream by hot tag" do
 			@search.search_stream_by_tag.should be_true
 		end

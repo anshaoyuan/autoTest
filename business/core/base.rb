@@ -13,7 +13,7 @@ class Base
 		@login_info = login_info
 		@driver=LoginHelp.login_method(login_info[:login_name],login_info[:pwd])
 		@log=LogHelp.getLog
-		@wait = Selenium::WebDriver::Wait.new({:timeout=>20})
+		@wait = get_wait(20)
 		@title="title"+Time.now.strftime("%Y-%m-%d")
 		if(@driver.nil? == false)
 			@log.setDriver(@driver)
@@ -31,11 +31,17 @@ class Base
 	end
 	def wait(second)
 		begin
-			error_wait = Selenium::WebDriver::Wait.new({:timeout=>second})
+			error_wait = get_wait(second)
 			error_wait.until{@driver.find_element(:id,"cannotfind")}
 		rescue
+			#this error needn't to catch
 		end
 	end	
+
+	def get_wait(second)
+		wait = Selenium::WebDriver::Wait.new({:timeout=>second})
+	end
+
 	def getrandom
 		Time.now.to_i.to_s
 	end

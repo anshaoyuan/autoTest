@@ -98,11 +98,7 @@ class User < Base
 	def save_pwd
 		@wait.until{@driver.find_element(:id,"savePassword")}.click
 	end
-	def update_info_by_typename(name,info)
-		typename = @wait.until{@driver.find_element(:name,name)}
-		typename.clear
-		typename.send_keys info
-	end
+
 
 	#这个方法其实没有什么意义，只是用于做修改某项资料失去焦点，并且等待提示消息消失
 	def disappear_message
@@ -119,8 +115,5 @@ class User < Base
 		save_update
 		!has_warn?(id,form_id,color)
 	end
-	def is_update?(name,info)
-		wait(3)
-		@wait.until{@driver.find_element(:name,name)}.attribute("value").eql?info
-	end
+
 end
