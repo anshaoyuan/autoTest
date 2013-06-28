@@ -64,6 +64,15 @@ module Common
 		return if member_array.nil?
 		input = @wait.until{@driver.find_element(:css,"##{div_id} ul li input.default")}
 		input.clear
+		select_option_by_members(member_array,input,div_id)
+		
+	end
+	def set_option_to_input_by_class(member_array,div_id)
+		return if member_array.nil?
+		input = @wait.until{@driver.find_element(:css,"##{div_id} div div ul li.search-field input")}
+		select_option_by_members(member_array,input,div_id)
+	end
+	def select_option_by_members(member_array,input,div_id)
 		member_array.each do |member|
 			input.send_keys member
 			wait(1)
@@ -77,7 +86,13 @@ module Common
 			end
 			
 		end
-		
+	end
+	def get_li_from_option_by_name(div_id,name)
+		options = @wait.until{@driver.find_elements(:css,"##{div_id} div.accordion-inner div ul li")}
+		options.each do |li|
+			return li if li.text.include?name
+		end
+		return nil
 	end
 	def set_option_to_input_by_search(member_array,div_id)
 		return if member_array.nil?

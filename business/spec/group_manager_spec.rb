@@ -53,7 +53,21 @@ describe GroupManager do
 			@manager.team_type_is_private?.should be_true
 		end
 	end
+	context "valid stream visible by team type" do
+		pending "wait team member" do 
+		end
+	end
+	context "team member manager" do
+		it "should be true when add a member to team ",level1:true do
+			@manager.add_team_member(Config_Option::VEST_NAME_LIUSS)
+			@manager.has_member?(Config_Option::VEST_NAME_LIUSS).should be_true
+		end
+		it "should be true when remove a memeber from team",level1:true do
+			@manager.remove_team_member(Config_Option::VEST_NAME_LIUSS)
+			@manager.has_member?(Config_Option::VEST_NAME_LIUSS).should_not be_true
+		end
 
+	end
 	def check_team_use_tag(is_use_tag,driver)
 			driver.set_team_use_tag(is_use_tag)
 			driver.valid_team_use_tag?.should == is_use_tag

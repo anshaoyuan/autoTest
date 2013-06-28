@@ -10,10 +10,18 @@ class GroupManager < Base
 		get_team_create_by_myself_last.find_element(:css,"div h5 a").click
 		go_to_group_manager
 	end
-	def go_to_group_manager
+	def show_options
 		@wait.until{@driver.find_element(:id,"show_options")}.click
+		wait(1)
+	end
+	def go_to_group_manager
+		show_options
 		@wait.until{@driver.find_element(:id,"teamSet")}.click
 		
+	end
+	def go_to_group_member
+		show_options
+		@wait.until{@driver.find_element(:id,"teamMember")}.click
 	end
 	def valid_teamName(team_name)
 		update_info_by_typename("vo.teamName",team_name)
@@ -83,7 +91,27 @@ class GroupManager < Base
 		!!get_element_by_id(id).attribute("checked")
 	end
 	def remove_team_member(member_name)
+		@wait.until{@driver.find_element(:link_text,"成员管理")}.click
+		li = get_li_from_option_by_name("teammember_div",member_name)
+		if !li.nil?
+			li.find_element(:class_name,"search-choice-close").click
+		end
 
+	end
+	def add_team_member(member_name)
+		@wait.until{@driver.find_element(:link_text,"成员管理")}.click
+		members = [member_name]
+		set_option_to_input_by_class(members,"teammember_div")
+	end
+	def has_member?(member_name)
+		go_to_group_member
+		wait(10)
+		members = @wait.until{@driver.find_elements(:css,"#teamMember-ul li.member-item.pull-left")}
+		members.each do |member|
+			member_text = member.find_element(:css,"div.member-info.pull-left h5 a").text
+			return true if member_text.include?member_name
+		end
+		false
 	end
 	private 
 	def show_team_member
