@@ -125,4 +125,10 @@ module Common
 		wait(3)
 		@wait.until{@driver.find_element(:name,name)}.attribute("value").eql?info
 	end
+	def get_element_by_name(name)
+		@wait.until{@driver.find_element(:name,name)}
+	end
+	def get_element_by_id(id)
+		@wait.until{@driver.find_element(:id,id)}
+	end
 end
