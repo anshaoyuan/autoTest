@@ -52,4 +52,10 @@ class Base
 	def goto_main_page
 		@driver.get Config_Option::LOGIN_URL
 	end
+
+	def refresh
+		curr_url = @driver.current_url
+		goto_main_page
+		@driver.get curr_url
+	end
 end

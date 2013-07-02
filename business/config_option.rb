@@ -14,9 +14,9 @@ class Config_Option
 	
 	#team dir
 	TEAM_ALL_URL=BASE_URL+"webShowteam!showteam.action"
-	BrowserName = "firefox"
+	BrowserName = :firefox
 
-
+	TAG_NAME = "autotest"
 	ACTIVE_DATE="2014-05-23 09:09:09"
 	ACTIVE_PLACE="office"
 	ACTIVE_MINUTE=20

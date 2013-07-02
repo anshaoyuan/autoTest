@@ -4,9 +4,9 @@ require_relative '../config_option'
 describe GroupManager do
 	before(:all){@manager = GroupManager.new}
 	after(:all){@manager.closeDriver}
-	before(:each){@manager.get_my_first_team_manager}
+	
 	context "basic team info for manager" do
-		
+		before(:each){@manager.get_my_first_team_manager}
 		it "should be true when update team name with uniqueness" do
 			@manager.valid_teamName(@manager.getrandom).should be_true
 		end
@@ -58,6 +58,7 @@ describe GroupManager do
 		end
 	end
 	context "team member manager" do
+		before(:each){@manager.get_my_first_team_manager}
 		it "should be true when add a member to team ",level1:true do
 			@manager.add_team_member(Config_Option::VEST_NAME_LIUSS)
 			@manager.has_member?(Config_Option::VEST_NAME_LIUSS).should be_true
@@ -65,6 +66,68 @@ describe GroupManager do
 		it "should be true when remove a memeber from team",level1:true do
 			@manager.remove_team_member(Config_Option::VEST_NAME_LIUSS)
 			@manager.has_member?(Config_Option::VEST_NAME_LIUSS).should_not be_true
+		end
+
+	end
+	context "team tag manager" do
+		before(:each){@manager.get_my_first_team}
+		it "should be true when add a tag to team ",level1:true do
+			tag_count = @manager.get_team_tag_count
+			@manager.add_team_tag(@manager.getrandom)
+			@manager.get_my_first_team
+			after_count = @manager.get_team_tag_count
+			after_count.should > tag_count
+		end
+		it "should be true when remove a tag from team ",level1:true do
+			tag_count = @manager.get_team_tag_count
+			if tag_count==0
+				@manager.add_team_tag(@manager.getrandom)
+				@manager.get_my_first_team
+				tag_count = @manager.get_team_tag_count
+			end
+			@manager.remove_team_tag
+			@manager.get_my_first_team
+			after_count = @manager.get_team_tag_count
+			after_count.should < tag_count
+		end
+	end
+	context "team announcement manager" do 
+		before(:each) do 
+			@manager.get_my_first_team
+			@manager.go_to_group_announcement
+		end
+		context "valid announcement info when add a announcement" do
+			before(:each) {@manager.show_add_announcement_panel}
+			it "should be false when title is more than 50 chars" do
+				@manager.valid_announcement_title(Config_Option::WRONG_SIGN_FOR_MORE_THAN_50_LENGTH).should be_false
+			end
+			it "should be false when title is empty" do
+				@manager.valid_announcement_title(" ").should be_false
+			end
+			it "should be true when title is eligible" do 
+				@manager.valid_announcement_title(@manager.getrandom).should be_true
+			end
+			it "should be false when announcement content is more than 50 chars" do
+				@manager.valid_announcement_content(Config_Option::WRONG_SIGN_FOR_MORE_THAN_50_LENGTH).should be_false
+			end
+			it "should be true when announcement content is eligible" do
+				@manager.valid_announcement_content(@manager.getrandom).should be_true
+			end
+
+		end
+		context "add announcement " do
+			before(:each) {@manager.show_add_announcement_panel}
+			it "should be true when add a eligible announcement info" do
+				announcement_info= {title:@manager.getrandom,content:@manager.getrandom}
+				@manager.add_announcement(announcement_info).should be_true
+			end
+
+		end
+
+		context "delete announcement" do
+			it "should be true when delete a announcement info " do
+				@manager.delete_announcement.should be_true
+			end
 		end
 
 	end

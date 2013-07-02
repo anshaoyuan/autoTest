@@ -46,8 +46,4 @@ describe Group do
 		end
 	end
 
-	context "group mananger" do
-		
-	end
-
 end
