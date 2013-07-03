@@ -77,37 +77,19 @@ class Search < Base
 	end
 	
 	def search_vest_by_vestname(vest_name)
-		get_option_from_top_search_input_and_click(vest_name,"有关用户")
-		have_result_from_vest_div_by_condition?
+		@driver.get Config_Option::VEST_ALL_URL
+		get_info_by_css_and_name("li.user-item.clearfix",vest_name){ |log,name,condition| log.info("#{name} search #{condition.length} vests")}
 	end
-	def get_vest_info_by_vestname(vest_name)
-		if search_vest_by_vestname(vest_name)
-			user_info = @wait.until{@driver.find_elements(:css,"#search-user-list ul li.user-item.clearfix")[0]}
-		else
-			@log.error("没有找到#{vest_name}用户 ")
-			raise "没有找到#{vest_name}用户 "
-		end
+
+
+	def search_team_by_teamname(team_name)
+		@driver.get Config_Option::TEAM_ALL_URL
+		get_info_by_css_and_name("li.group-item.clearfix",team_name){ |log,name,condition| log.info("#{name} search #{condition.length} teams")}
 	end
 	def follow_user_by_search(vest_name)
-		user = get_vest_info_by_vestname(vest_name)
-
+		user = search_vest_by_vestname(vest_name)
 		follow_user_successful?(user)
-
 	end
-	def search_team_by_teamname(team_name)
-		get_option_from_top_search_input_and_click(team_name,"有关群组")
-		have_result_from_team_div_by_condition?
-		
-	end
-	def get_team_info_by_teamname(team_name)
-		if search_team_by_teamname(team_name)
-			team_info = @wait.until{@driver.find_elements(:css,"#search-team-list ul li.group-item.clearfix")[0]}
-		else
-			@log.error("没有找到#{team_name}群组 ")
-			raise "没有找到#{team_name}群组 "
-		end
-	end
-
 	def get_option_from_top_search_input_and_click(search_condition,type)
 		
 		search_input = 	clear_top_search_input
@@ -141,9 +123,6 @@ class Search < Base
 		goto_main_page
 		search_btn = @wait.until{@driver.find_element(:id,"search-query")}
 		search_btn.click
-		#high_grade_link_div = @wait.until {@driver.find_element(:id,"a_search_div")}			
-		#high_grade_btn = high_grade_link_div.find_element(:tag_name,"a")
-		#high_grade_btn.click
 	end
 
 	def goto_search
@@ -154,15 +133,9 @@ class Search < Base
 	def get_record_count_for_stream
 		result = @wait.until{@driver.find_element(:id,"search_result_count").text}
 	end
-	def get_record_count_for_vest
-		result = @wait.until{@driver.find_element(:css,"#search-vest-result h5 small strong").text}
-	end
-	
-	def get_record_count_for_team
-		result = @wait.until{@driver.find_element(:css,"#search-team-result h5 small strong").text}
-	end
+
 	def have_reslut_from_stream_div_by_condition?
-		
+
 		begin
 			@wait.until{@driver.find_elements(:css,"#search_result ul li.article-item.clearfix.stream-item")}
 			true
@@ -170,15 +143,23 @@ class Search < Base
 			false
 		end
 	end
-	def have_result_from_vest_div_by_condition?
-		div = @wait.until{@driver.find_element(:css,"#search-user-list ul div")}
-		!div.text.include?"没有搜索到相关的用户信息!"
-	end
-	def have_result_from_team_div_by_condition?
-		div = @wait.until{@driver.find_element(:css,"#search-team-list ul div")}
-		!div.text.include?"没有搜索到相关的群组信息!"
-	end
+
 	private
+	def get_info_by_css_and_name(css,name)
+		wait(10)
+		by_condition = []
+		iteams = get_elements_by_css("#{css}")
+		iteams.each do |iteam|
+			by_condition << iteam  if iteam.text.include?name
+		end
+		if by_condition.length == 0
+			return nil
+		elsif by_condition.length>1
+			yield @log,name,by_condition
+			
+		end
+		by_condition[0]
+	end
 	def search_stream(search_content)
 		search_input = clear_top_search_input
 		search_input.send_keys search_content

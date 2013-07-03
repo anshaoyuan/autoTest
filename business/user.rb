@@ -21,7 +21,7 @@ class User < Base
 		before_new_fans_remind_count = new_fans_remind_count.to_i
 		@log.info("被关注之前新粉提醒数量#{before_new_fans_remind_count}")
 		search = Search.new(fans_info)
-		user = search.get_vest_info_by_vestname(@login_info[:name])
+		user = search.search_vest_by_vestname(@login_info[:name])
 		search.follow_user_by_user_info(user)
 		search.closeDriver
 		wait(10)

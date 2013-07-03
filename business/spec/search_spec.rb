@@ -38,22 +38,23 @@ describe Search do
 		end
 	end
 	describe "search user" do
-		it "should be true when search user by user name" do
-			@search.search_vest_by_vestname(Config_Option::VEST_NAME).should be_true
+		it "should not be nil when search user by user name" do
+			#Config_Option::VEST_NAME
+			@search.search_vest_by_vestname("李").should_not be_nil
 		end
-		it "should be false when search user by wrong name" do
-			@search.search_vest_by_vestname(Config_Option::WRONG_VEST_NAME).should be_false
+		it "should be nil when search user by wrong name" do
+			@search.search_vest_by_vestname(Config_Option::WRONG_VEST_NAME).should be_nil
 		end
 		it "should be true when search user and follow it" do
 			@search.follow_user_by_search(Config_Option::VEST_NAME_LIUSS).should be_true
 		end
 	end
 	describe "search team" do
-		it "should be true when search team by right team name" do
-			@search.search_team_by_teamname(Config_Option::TEAM_NAME).should be_true
+		it "should not be nil when search team by right team name" do
+			@search.search_team_by_teamname(Config_Option::TEAM_NAME).should_not be_nil
 		end
-		it "should be false when search team by wrong team name" do
-			@search.search_team_by_teamname(Config_Option::WRONG_TEAM_NAME).should be_false
+		it "should be nil when search team by wrong team name" do
+			@search.search_team_by_teamname(Config_Option::WRONG_TEAM_NAME).should be_nil
 		end
 	end
 end

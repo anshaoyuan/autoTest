@@ -14,6 +14,7 @@ class Config_Option
 	
 	#team dir
 	TEAM_ALL_URL=BASE_URL+"webShowteam!showteam.action"
+	VEST_ALL_URL = BASE_URL+"webUserdic.action"
 	BrowserName = :firefox
 
 	TAG_NAME = "autotest"

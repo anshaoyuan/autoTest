@@ -103,7 +103,7 @@ class Message_Info < Base
 		group.create_new_team(team_info)
 		group.closeDriver
 		search = Search.new(user_info)
-		team_info_li = search.get_team_info_by_teamname(team_info["name"])
+		team_info_li = search.search_team_by_teamname(team_info["name"])
 		join_btn = Group_Helper.find_btn_by_team_info(team_info_li)
 		join_btn.click
 		search.closeDriver
