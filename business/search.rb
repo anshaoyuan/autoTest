@@ -22,7 +22,7 @@ class Search < Base
 		end
 	end
 
-	def search_stream_by_title(title=@title)
+	def search_stream_by_title(title)
 		show_high_grade_query_from
 		title_input = @wait.until{@driver.find_element(:name,"searchVo.titleName")}	
 		title_input.send_keys title

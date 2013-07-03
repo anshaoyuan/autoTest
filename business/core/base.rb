@@ -13,10 +13,9 @@ class Base
 		@driver=LoginHelp.login_method(login_info[:login_name],login_info[:pwd])
 		@log=LogHelp.getLog
 		@wait = get_wait(20)
-		@title="title"+Time.now.strftime("%Y-%m-%d")
 		@log.setDriver(@driver) unless @driver.nil?
 	end
-	
+
 	def closeDriver
 		begin
 			@driver.close unless @driver.nil?
@@ -44,7 +43,9 @@ class Base
 	def getDriver
 		@driver
 	end
-
+	def get_login_info
+		@login_info
+	end
 	def getLog
 		@log
 	end

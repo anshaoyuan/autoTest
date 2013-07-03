@@ -12,6 +12,7 @@ class Stream < Base
 	include Stream_Module
 	def initialize(login_info = Config_Option::LOGIN_INFO)
 		super(login_info)
+		@title="title"+Time.now.strftime("%Y-%m-%d")
 		@currDate = Time.now.strftime("%Y-%m-%d%H:%M:%S")+"_autotest"
 		@content = "this is stream content for release "+@currDate
 		@transmit_content = "this is stream content for transmit"+@currDate
