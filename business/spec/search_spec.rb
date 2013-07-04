@@ -39,8 +39,7 @@ describe Search do
 	end
 	describe "search user" do
 		it "should not be nil when search user by user name" do
-			#Config_Option::VEST_NAME
-			@search.search_vest_by_vestname("李").should_not be_nil
+			@search.search_vest_by_vestname(Config_Option::VEST_NAME).should_not be_nil
 		end
 		it "should be nil when search user by wrong name" do
 			@search.search_vest_by_vestname(Config_Option::WRONG_VEST_NAME).should be_nil

@@ -36,8 +36,13 @@ module Common
 		my_store.click
 		wait(3)
 	end
-	def get_option_from_component_by_name(component_id,name)
-		component = get_element_by_id(component_id)
+	def get_option_from_component_by_name(finder,name)
+		if block_given?
+			component = yield finder
+		else
+			component = get_element_by_id(finder)
+		end
+		
 		show_team_a = get_element_by_tag_name("a",component)
 		show_team_a.click
 		input= get_element_by_css("div div input",component) 
@@ -46,6 +51,7 @@ module Common
 		lis = get_elements_by_tag_name("li",component)
 		select_option_from_lis_by_search_name(lis,name)
 	end
+
 	def select_option_from_lis_by_search_name(lis,search_name)
 		has_team=false
 		lis.each do |option|
@@ -74,6 +80,7 @@ module Common
 	end
 	def select_option_by_members(member_array,input,div_id)
 		member_array.each do |member|
+			input.click
 			input.send_keys member
 			wait(1)
 			input.click

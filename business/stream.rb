@@ -10,12 +10,21 @@ class Stream < Base
 	include Common
 	include Message
 	include Stream_Module
-	def initialize(login_info = Config_Option::LOGIN_INFO)
-		super(login_info)
+	def initialize(obj = Config_Option::LOGIN_INFO)
 		@title="title"+Time.now.strftime("%Y-%m-%d")
 		@currDate = Time.now.strftime("%Y-%m-%d%H:%M:%S")+"_autotest"
 		@content = "this is stream content for release "+@currDate
 		@transmit_content = "this is stream content for transmit"+@currDate
+		if obj.instance_of?Hash
+			super
+		elsif obj.class.superclass.to_s == "Base"
+			@login_info = obj.get_login_info
+			@driver = obj.getDriver
+			@log = obj.getLog
+			@wait = get_wait(20)
+		else
+			raise "initialize get a error , nonlicet args type for #{obj.class.superclass}"
+		end
 	end
 
 	def release_stream(content,title=@title)
@@ -91,19 +100,33 @@ class Stream < Base
 		transmit_btn.click
 		release_stream_successful? content
 	end
-	def delete_stream
+	def delete_stream_from_stream_list(div_id)
+		stream_list = @wait.until{@driver.find_elements(:css,"##{div_id} ul li.article-item.clearfix.stream-item")}
+		delete_stream(stream_list[0])
+	end
+	def delete_stream(stream_li)
+		del_btn = get_element_by_css("a.delete.btn.stream-del",stream_li)
+		del_btn.click
+		do_confirm("确定")
+		wait(5)
+		begin
+			del_btn = get_element_by_css("a.delete.btn.stream-del",stream_li)
+			false
+		rescue Selenium::WebDriver::Error::StaleElementReferenceError => e
+			true
+		end
+	end
+	def delete_stream_from_my_share
 		jump_to_my_space
 		share_link = @wait.until{ @driver.find_element(:css,"#myshare-lxj a")}
 		share_link.click
 		wait(5)
-		stream_count = @wait.until{@driver.find_elements(:css,"#my-share ul li.article-item.clearfix.stream-item")}
-		del_btn = @wait.until{ @driver.find_element(:css,"#my-share ul li div ul li a.delete.btn.stream-del") }
+		delete_stream_from_stream_list("my-share")
 
-		del_btn.click
-		do_confirm("确定")
-		wait(5)
-		after_del_stream_count = @wait.until{@driver.find_elements(:css,"#my-share ul li.article-item.clearfix.stream-item")}
-		stream_count.length==after_del_stream_count.length+1
+	end
+
+	def delete_stream_from_first_title
+		delete_stream(get_first_title_first_stream)
 	end
 	def get_currtime_stream_content
 		content = Time.now.strftime("%Y-%m-%d-%H:%M:%S")+"_autotest"
@@ -112,16 +135,18 @@ class Stream < Base
 				goto_main_page
 		  		release_btn =@wait.until {@driver.find_element(:css,"#top div div ul li div a.global-writer")} 
 		  		release_btn.click
+		  		wait(5)
 		  		@log.info("coming to release page")
 		  		title_r=@driver.find_element(:id,"post-title")
 		  		title_r.send_keys title
 		  		
-		  		#switch to iframe,the arg for frame method is iframe name
 		  		@wait.until {@driver.switch_to.frame("pubhtml5_iframe")}
 		  		release_body = @wait.until {@driver.find_element(:tag_name,"body")}
 		  		release_body.send_keys content
-		  		#switch back to the main document
+		  		
 		  		@driver.switch_to.default_content
+
+		  		#TODO check release have to add tag?
 	end	
 	def get_first_title
 		goto_main_page

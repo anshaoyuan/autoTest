@@ -32,7 +32,7 @@ describe Stream do
 	end
 	describe "delete stream from user share" do
 		it "should delete stream" do
-			@stream.delete_stream.should be_true
+			@stream.delete_stream_from_my_share.should be_true
 		end
 	end
 	describe "store stream" do

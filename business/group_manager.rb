@@ -5,11 +5,31 @@ require_relative 'common/alert_message'
 class GroupManager < Base
 	include TeamModule
 	include Message
-	def get_my_first_team
-		get_team_create_by_myself_last.find_element(:css,"div h5 a").click
+	def initialize(obj = Config_Option::LOGIN_INFO)
+		if obj.instance_of?Hash
+			super
+		elsif obj.class.superclass.to_s == "Base"
+			@login_info = obj.get_login_info
+			@driver = obj.getDriver
+			@log = obj.getLog
+			@wait = get_wait(20)
+		else
+			raise "initialize get a error , nonlicet args type for #{obj.class.superclass}"
+		end
 	end
-	def get_my_first_team_manager
-		get_my_first_team
+
+	def get_my_first_team
+		first_team = get_team_create_by_myself_last
+		team_name = first_team.find_element(:css,"div h5 a").text
+		first_team.find_element(:css,"div h5 a").click
+		team_name
+	end
+	def go_to_team_manager
+		if block_given?
+			yield
+		else
+			get_my_first_team
+		end
 		go_to_group_manager
 	end
 	def show_options
@@ -19,7 +39,10 @@ class GroupManager < Base
 	def go_to_group_manager
 		show_options
 		@wait.until{@driver.find_element(:id,"teamSet")}.click
-		
+		get_element_by_css("#team-detials div h5 a").text
+	end
+	def go_to_group_main_page
+		get_element_by_css("#team-detials div h5 a").click
 	end
 	def go_to_group_member
 		show_options
@@ -183,6 +206,36 @@ class GroupManager < Base
 			get_announcement_count+1 == before_count
 		end
 	end
+
+	def deliver_team(member_name)
+		get_element_by_id("transfer-team").click
+		css = "#transferTeam div div.accordion-inner div.chzn-container.chzn-container-single"
+		get_option_from_component_by_name(css,member_name){ |css| get_element_by_css(css)}
+		get_element_by_id("transfer-team－btn").click
+		do_confirm("确定")
+	end
+
+	def change_member_manager(member_name)
+		get_element_by_id("teammanage").click
+		members = [member_name]
+		set_option_to_input_by_class(members,"teammanage_div")
+	end
+	def is_manager?
+		begin
+			get_element_by_css("#dismissBtn a.accordion-toggle")
+			true
+		rescue Exception => e
+			false
+		end
+	end
+
+	def dismiss_team
+		get_element_by_id("dismissBtn").click
+		get_element_by_id("confirmation").click
+		get_element_by_id("disband-btn").click
+
+	end
+
 	private 
 	def show_team_member
 		@wait.until{@driver.find_element(:css,"#teammember a.accordion-toggle")}.click

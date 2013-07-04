@@ -5,8 +5,8 @@ describe GroupManager do
 	before(:all){@manager = GroupManager.new}
 	after(:all){@manager.closeDriver}
 	
-	context "basic team info for manager" do
-		before(:each){@manager.get_my_first_team_manager}
+	context "basic team info for manage" do
+		before(:each){@manager.go_to_team_manager}
 		it "should be true when update team name with uniqueness" do
 			@manager.valid_teamName(@manager.getrandom).should be_true
 		end
@@ -53,12 +53,29 @@ describe GroupManager do
 			@manager.team_type_is_private?.should be_true
 		end
 	end
+
+	context "team manager delete member stream " do
+		before(:each){ @team_name = @manager.go_to_team_manager}
+		it "should be true delete stream by manager",level2:true do 
+			@manager.add_team_member(Config_Option::OTHER_USER_INFO[:name])
+			search = Search.new(Config_Option::OTHER_USER_INFO)
+			team = search.search_team_by_teamname(@team_name)
+			team.should_not be_nil
+			team.find_element(:css,"div h5 a").click
+			stream = Stream.new(search)
+			stream.release_stream("测试管理员删除成员博文").should be_true
+			stream.closeDriver
+			@manager.go_to_group_manager
+			stream_manager = Stream.new(@manager)
+			stream_manager.delete_stream_from_first_title.should be_true
+		end
+	end
 	context "valid stream visible by team type" do
 		pending "wait team member" do 
 		end
 	end
-	context "team member manager" do
-		before(:each){@manager.get_my_first_team_manager}
+	context "team member manage,manager manage and deliver to other member" do
+		before(:each){ @team_name = @manager.go_to_team_manager}
 		it "should be true when add a member to team ",level1:true do
 			@manager.add_team_member(Config_Option::VEST_NAME_LIUSS)
 			@manager.has_member?(Config_Option::VEST_NAME_LIUSS).should be_true
@@ -68,8 +85,30 @@ describe GroupManager do
 			@manager.has_member?(Config_Option::VEST_NAME_LIUSS).should_not be_true
 		end
 
+		it "should be true when team deliver to other member ",level2:true do
+			change_member_to_manager do
+				@manager.deliver_team(Config_Option::OTHER_USER_INFO[:name])
+			end
+			#@manager.is_manager?.should be_false
+			check_is_manager_by_search(@team_name).should be_true
+		end
+
+		it "should be true when add a manager to team " ,level2:true do
+			change_member_to_manager do
+				@manager.change_member_manager(Config_Option::OTHER_USER_INFO[:name])
+			end
+			check_is_manager_by_search(@team_name).should be_true
+		end
+		it "should be true when dismiss a team by team manage" do
+			@manager.dismiss_team
+			search = Search.new
+			search.search_team_by_teamname(@team_name).should be_nil
+			search.closeDriver
+		end
 	end
-	context "team tag manager" do
+
+
+	context "team tag manage" do
 		before(:each){@manager.get_my_first_team}
 		it "should be true when add a tag to team ",level1:true do
 			tag_count = @manager.get_team_tag_count
@@ -91,7 +130,11 @@ describe GroupManager do
 			after_count.should < tag_count
 		end
 	end
-	context "team announcement manager" do 
+
+
+
+
+	context "team announcement manage" do 
 		before(:each) do 
 			@manager.get_my_first_team
 			@manager.go_to_group_announcement
@@ -131,6 +174,7 @@ describe GroupManager do
 		end
 
 	end
+
 	def check_team_use_tag(is_use_tag,driver)
 			driver.set_team_use_tag(is_use_tag)
 			driver.valid_team_use_tag?.should == is_use_tag
@@ -142,5 +186,28 @@ describe GroupManager do
 	def check_team_for_invite(is_invite,driver)
 		driver.set_team_invite_info(is_invite)
 		driver.valid_team_invite_info?.should == is_invite
+	end
+	def check_is_manager_by_search(team_name)
+		begin
+			search = Search.new(Config_Option::OTHER_USER_INFO)
+			team = search.search_team_by_teamname team_name
+			team.should_not be_nil
+			manager_other = GroupManager.new(search)
+			manager_other.go_to_team_manager{team.find_element(:css,"div h5 a").click}
+			manager_other.is_manager?
+		rescue Exception => e
+			raise e
+		ensure
+			search.closeDriver
+		end
+	end
+
+	def change_member_to_manager
+			@manager.add_team_member(Config_Option::OTHER_USER_INFO[:name])
+			@manager.has_member?(Config_Option::OTHER_USER_INFO[:name]).should be_true
+			@manager.go_to_group_manager
+			yield
+			@manager.wait(5)
+			@manager.go_to_group_manager
 	end
 end
