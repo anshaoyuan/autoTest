@@ -19,8 +19,7 @@ class Talk < Base
 	def search_my_chat_history
 		show_my_chat_history
 		wait(5)
-		first_message = get_first_message
-		search_message? first_message
+		search_message? get_first_message
 	end
 	def talk_with_other_user(message_info,user_info)
 		get_talker_from_my_follow(user_info[:name])
@@ -39,8 +38,12 @@ class Talk < Base
 		end
 	end
 	def get_first_message
-		messages = @wait.until{@driver.find_elements(:css,"#user_note div div div.clearfix")}
-		first_message = messages[0].find_element(:css,"div p.liaotian").text
+		messages = @wait.until{@driver.find_elements(:css,"#user_note div div div.clearfix div.pull-left.dialog-box")}
+		first_message = messages[0].find_element(:css,"p.liaotian").text
+	end
+	def get_first_message_by_search
+		messages = @wait.until{@driver.find_elements(:css,"#user_note_search div div div.clearfix  div.pull-left.dialog-box")}
+		first_message = messages[0].find_element(:css,"p.liaotian").text
 	end
 	def search_message?(message)
 		show_search_btn = @wait.until{@driver.find_element(:id,"searchNotes")}
@@ -49,8 +52,8 @@ class Talk < Base
 		search_content_input.send_keys message
 		search_btn = @driver.find_element(:id,"search_note")
 		search_btn.click
-		first_result_from_search = get_first_message
-		first_result_from_search.include?message
+		wait(3)
+		get_first_message_by_search.include?message
 
 	end
 	def talkking(message_info,user_driver)

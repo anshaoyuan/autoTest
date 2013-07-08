@@ -155,7 +155,7 @@ class GroupManager < Base
 	def add_team_tag(tag_name)
 		go_to_group_tag
 		get_element_by_css("#team-tagtab-h button").click
-		wait(3)
+		wait(5)
 		get_element_by_name("vo.tagName").send_keys tag_name
 		get_element_by_css("button.btn.btn-primary",get_element_by_id("team-tagtab-body-new")).click
 	end

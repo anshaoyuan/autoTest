@@ -29,7 +29,7 @@ class CustomPage < Base
 		#这里先需要设置等待加载时间，不然会为0
 		if get_all_config.length > MIN_SIZE
 			del_all_config
-			wait(1)
+			wait(3)
 			get_all_config.length == MIN_SIZE
 		else
 			@wait.until{@driver.find_element(:id,"theme-stream-none")}.text.include?"暂无博文!"
