@@ -5,16 +5,13 @@ describe Stream do
 	before(:all){@stream=Stream.new}
 	after(:all){@stream.closeDriver}
 	describe "release stream" do
-		it "should release a new norimal stream" do
-			
+		it "should release a new norimal stream",level1:true do
 			@stream.release_stream(@stream.get_currtime_stream_content).should be_true
 		end
-		it "should release a new stream for vote" do
-		
+		it "should release a new stream for vote" ,level1:true do
 			@stream.release_vote(@stream.get_currtime_stream_content).should be_true
 		end
-		it "should release a new stream for active" do
-		
+		it "should release a new stream for active" ,level1:true do
 			@stream.release_ative(@stream.get_currtime_stream_content,Config_Option::MEMBERS,"schould").should be_true
 		end
 	end

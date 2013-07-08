@@ -94,6 +94,15 @@ module Common
 			
 		end
 	end
+	def select_first_option(div_id)
+			input = get_element_by_css("##{div_id} ul li.search-field input") 
+			input.click
+			members = get_elements_by_css("##{div_id} div ul li")
+			members.each do |li|
+					li.click
+					break
+			end
+	end
 	def get_li_from_option_by_name(div_id,name)
 		options = get_elements_by_css("##{div_id} div.accordion-inner div ul li")
 		options.each do |li|

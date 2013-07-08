@@ -1,37 +1,29 @@
 #encoding: utf-8
-require_relative 'core/base'
+require_relative 'core/base_driver'
 require 'time'
 require_relative 'config_option'
 require_relative 'common/common_module'
 require_relative 'common/alert_message'
 require_relative 'common/stream_module'
-class Stream < Base
+class Stream < BaseDriver
 	attr_accessor :content,:title
 	include Common
 	include Message
 	include Stream_Module
 	def initialize(obj = Config_Option::LOGIN_INFO)
+		super
 		@title="title"+Time.now.strftime("%Y-%m-%d")
 		@currDate = Time.now.strftime("%Y-%m-%d%H:%M:%S")+"_autotest"
 		@content = "this is stream content for release "+@currDate
 		@transmit_content = "this is stream content for transmit"+@currDate
-		if obj.instance_of?Hash
-			super
-		elsif obj.class.superclass.to_s == "Base"
-			@login_info = obj.get_login_info
-			@driver = obj.getDriver
-			@log = obj.getLog
-			@wait = get_wait(20)
-		else
-			raise "initialize get a error , nonlicet args type for #{obj.class.superclass}"
-		end
+
 	end
 
 	def release_stream(content,title=@title)
 		begin
 				release_stream_base(content,title)
 		  		@log.info("just a release stream method")
-				@driver.find_element(:id,"pub-btn").click
+		  		submit_release
 				@log.info("release stream result!")
 				release_stream_successful? content
 		rescue Exception => e
@@ -40,39 +32,27 @@ class Stream < Base
 		end
 				
 	end
-	
-
 
 	def release_vote(content,title=@title)
 				
 				release_stream_base(content,title)
 				find_votediv_and_fill_options
 		  		@log.info("just a release stream for vote method")
-				@driver.find_element(:id,"pub-btn").click
+				submit_release
 				@log.info("release stream for vote result!")
 				release_stream_successful? content
 	end
-
-	
 
 	def release_ative(content,members,title=@title)
 		
 		release_stream_base(content,title)
 		find_activediv_and_fill_options members
 		@log.info("just a release stream for active method")
-		@driver.find_element(:id,"pub-btn").click
+		submit_release
 		@log.info("release stream for active result!")
 		release_stream_successful? content
 	end
 
-=begin
-	def first_title_is_release_title
-		goto_main_page
-		title_div = @wait.until {@driver.find_element(:id,"stream-panel")}
-		first_title = get_first_title.text
-		first_title.eql?@title
-	end
-=end
 	def transmit_stream
 		first_title = get_first_title
 		
@@ -201,11 +181,19 @@ class Stream < Base
 		vote_driver = @wait.until { @driver.find_element(:id,"add-vote")}
 		ol = vote_driver.find_element(:css,"div ol ")
 		lis = ol.find_elements(:tag_name,"li")
+		#TODO remove li_index var
 		li_index=1
 		lis.each do |li|
 			li.find_element(:tag_name,"input").send_keys "option#{li_index}"
 			li_index +=1
 		end
 	end		
+	def submit_release
+				@driver.find_element(:id,"pub-btn").click
+				if has_warn?("teamTag","writer")
+					select_first_option("teamTag_chzn")
+					@driver.find_element(:id,"pub-btn").click
+				end
+	end
 end
 

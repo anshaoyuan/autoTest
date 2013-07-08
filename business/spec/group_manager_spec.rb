@@ -58,13 +58,18 @@ describe GroupManager do
 		before(:each){ @team_name = @manager.go_to_team_manager}
 		it "should be true delete stream by manager",level2:true do 
 			@manager.add_team_member(Config_Option::OTHER_USER_INFO[:name])
-			search = Search.new(Config_Option::OTHER_USER_INFO)
-			team = search.search_team_by_teamname(@team_name)
-			team.should_not be_nil
-			team.find_element(:css,"div h5 a").click
-			stream = Stream.new(search)
-			stream.release_stream("测试管理员删除成员博文").should be_true
-			stream.closeDriver
+			begin
+				search = Search.new(Config_Option::OTHER_USER_INFO)
+				team = search.search_team_by_teamname(@team_name)
+				team.should_not be_nil
+				team.find_element(:css,"div h5 a").click
+				stream = Stream.new(search)
+				stream.release_stream("测试管理员删除成员博文").should be_true
+			rescue Exception => e
+				raise e
+			ensure
+				search.closeDriver
+			end
 			@manager.go_to_group_manager
 			stream_manager = Stream.new(@manager)
 			stream_manager.delete_stream_from_first_title.should be_true
@@ -101,9 +106,14 @@ describe GroupManager do
 		end
 		it "should be true when dismiss a team by team manage" do
 			@manager.dismiss_team
-			search = Search.new
-			search.search_team_by_teamname(@team_name).should be_nil
-			search.closeDriver
+			begin
+				search = Search.new
+				search.search_team_by_teamname(@team_name).should be_nil
+			rescue Exception => e
+				raise e
+			ensure
+				search.closeDriver
+			end
 		end
 	end
 
