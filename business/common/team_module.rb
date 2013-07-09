@@ -17,4 +17,7 @@ module TeamModule
 		create_by_myself_team=@wait.until{@driver.find_element(:css,"#accordion2 div div a.accordion-toggle")}	
 		create_by_myself_team.click
 	end
+	def get_curr_team_link
+		get_element_by_css("#team-detials div h5 a")
+	end
 end

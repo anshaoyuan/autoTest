@@ -27,10 +27,10 @@ class GroupManager < BaseDriver
 	def go_to_group_manager
 		show_options
 		@wait.until{@driver.find_element(:id,"teamSet")}.click
-		get_element_by_css("#team-detials div h5 a").text
+		get_curr_team_link.text
 	end
 	def go_to_group_main_page
-		get_element_by_css("#team-detials div h5 a").click
+		get_curr_team_link.click
 	end
 	def go_to_group_member
 		show_options

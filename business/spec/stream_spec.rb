@@ -23,7 +23,7 @@ describe Stream do
 	end	
 =end	
 	describe "transmit stream on curr team" do
-		it "transimit stream should at top position on the stream div" do
+		it "transimit stream should at top position on the stream div",level1:true do
 			@stream.transmit_stream.should be_true
 		end
 	end

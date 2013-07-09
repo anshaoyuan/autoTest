@@ -1,4 +1,5 @@
 #encoding:utf-8
+require 'time'
 module Common
 	def jump_to_my_space
 		a_link = get_element_by_id("right_userName")
@@ -165,25 +166,37 @@ module Common
 	def get_element_by_css(css,finder = @driver)
 		@wait.until{finder.find_element(:css,css)}
 	end
-	def get_elements_by_css(css,finder = @driver)
-		@wait.until{finder.find_elements(:css,css)}
+
+	def get_elements_by_css(css,finder = @driver,&block)
+		get_elements_by_type(:css,css,finder,&block)
 	end
 	def get_element_by_tag_name(tag_name,finder = @driver)
 		@wait.until{finder.find_element(:tag_name,tag_name)}
 	end
-	def get_elements_by_tag_name(tag_name,finder = @driver)
-		@wait.until{finder.find_elements(:tag_name,tag_name)}
+	def get_elements_by_tag_name(tag_name,finder = @driver,&block)
+		get_elements_by_type(:tag_name,tag_name,finder,&block)
 	end
 	def get_element_by_link_text(link_text,finder = @driver)
 		@wait.until{finder.find_element(:link_text,link_text)}
 	end
-	def get_elements_by_link_text(link_text,finder = @driver)
-		@wait.until{finder.find_elements(:link_text,link_text)}
+	def get_elements_by_link_text(link_text,finder = @driver,&block)
+		get_elements_by_type(:link_text,link_text,finder,&block)
 	end
 	def get_element_by_class_name(class_name,finder = @driver)
 		@wait.until{finder.find_elements(:class_name,class_name)}
 	end
-	def get_elements_by_class_name(class_name,finder = @driver)
-		@wait.until{find.find_elements(:class_name,class_name)}
+	def get_elements_by_class_name(class_name,finder = @driver,&block)
+		get_elements_by_type(:class_name,class_name,finder,&block)
+	end
+	private 
+	def get_elements_by_type(type,type_value,finder)
+		obj = @wait.until do  
+			if block_given?
+				yield finder.find_elements(type,type_value)
+			else
+				wait(3)
+				finder.find_elements(type,type_value)
+			end
+		end
 	end
 end
