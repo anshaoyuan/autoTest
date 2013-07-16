@@ -65,11 +65,4 @@ class Base
 		super
 	end
 
-	def get_elements_by_css(css,finder = @driver)
-		puts @wait.nil?
-
-		puts "#{Time.now.strftime('%Y-%m-%D%H-%M-%S')}"
-		@wait.until{finder.find_elements(:css,css)}
-		puts "#{Time.now.strftime('%Y-%m-%D%H-%M-%S')}"
-	end
 end
