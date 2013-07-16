@@ -31,10 +31,15 @@ class Talk < Base
 		wait(5)
 		begin
 			talkking(message_info,t)
+			t.getLog.info("消息发送完毕")
+			true
 		rescue Exception => e
-			t.getLog.error("即时聊天失败")
-			@log.error("即时聊天失败")
-			raise "即时聊天失败",e
+			t.getLog.error("即时聊天失败 #{e.message}")
+			@log.error("即时聊天失败 #{e.message}")
+			puts e.message
+			raise e
+		ensure
+			t.closeDriver
 		end
 	end
 	def get_first_message
@@ -57,17 +62,14 @@ class Talk < Base
 
 	end
 	def talkking(message_info,user_driver)
-		for i in 1...message_info.length
-				if i%2==0
-					send_keys(message_info[i])
-				else
-					user_driver.send_keys(message_info[i])
-				end
-				wait(1)
-				if(i==message_info.length-1)
-					user_driver.getLog.info("消息发送完毕")
-					user_driver.closeDriver
-				end
+		message_info.each_with_index do |message,index|
+			next if index == 0
+			if index.even?
+				send_keys message
+			else
+				user_driver.send_keys message
+			end
 		end
+
 	end
 end
