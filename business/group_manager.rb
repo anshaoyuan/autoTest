@@ -29,9 +29,7 @@ class GroupManager < BaseDriver
 		@wait.until{@driver.find_element(:id,"teamSet")}.click
 		get_curr_team_link.text
 	end
-	def go_to_group_main_page
-		get_curr_team_link.click
-	end
+
 	def go_to_group_member
 		show_options
 		@wait.until{@driver.find_element(:id,"teamMember")}.click
@@ -75,11 +73,7 @@ class GroupManager < BaseDriver
 		get_element_by_name(name).click if is_checked == !checked
 		save_basic_team_info
 	end
-	def valid_check_box_by_name(name)
-		wait(10)
-		go_to_group_manager
-		!!get_element_by_name(name).attribute("checked") 
-	end
+
 	def set_team_invite_info(is_invite)
 		set_check_box_by_name("vo.inviteFlag",is_invite)
 	end
@@ -104,15 +98,8 @@ class GroupManager < BaseDriver
 	def team_type_is_private?
 		valid_radio_box_by_id("team-access-priv")
 	end
-	def set_radio_box_by_id(id)
-		get_element_by_id(id).click
-		save_basic_team_info
-	end
-	def valid_radio_box_by_id(id)
-		wait(10)
-		go_to_group_manager
-		!!get_element_by_id(id).attribute("checked")
-	end
+
+
 	def remove_team_member(member_name)
 		@wait.until{@driver.find_element(:link_text,"成员管理")}.click
 		li = get_li_from_option_by_name("teammember_div",member_name)
@@ -241,5 +228,18 @@ class GroupManager < BaseDriver
 	def lost_focus
 		@driver.find_element(:id,"teamSetClue").click
 	end
-
+	def valid_check_box_by_name(name)
+		wait(10)
+		go_to_group_manager
+		!!get_element_by_name(name).attribute("checked") 
+	end
+	def set_radio_box_by_id(id)
+		get_element_by_id(id).click
+		save_basic_team_info
+	end
+	def valid_radio_box_by_id(id)
+		wait(10)
+		go_to_group_manager
+		!!get_element_by_id(id).attribute("checked")
+	end
 end
