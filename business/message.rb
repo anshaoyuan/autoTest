@@ -31,7 +31,7 @@ class Message_Info < Base
 	def comment_me(user_info = Config_Option::OTHER_USER_INFO)
 		wait(5)
 		before_comment_count = comment_count.to_i
-		helper = get_stream_helper(Config_Option::RELEASE_STREAM_INFO,user_info)
+		helper = release_stream_and_get_stream_helper(Config_Option::RELEASE_STREAM_INFO,user_info)
 		helper.comment_first_titile_first_stream Config_Option::COMMNET
 		helper.closeDriver
 		wait(10)
@@ -52,7 +52,7 @@ class Message_Info < Base
 	def commend_me(user_info = Config_Option::OTHER_USER_INFO)
 		wait(5)
 		before_commend_count = commend_count.to_i
-		helper = get_stream_helper(Config_Option::COMMEND,user_info)
+		helper = release_stream_and_get_stream_helper(Config_Option::COMMEND,user_info)
 		helper.commend_first_title_first_stream
 		helper.closeDriver
 		wait(10)
@@ -158,8 +158,8 @@ class Message_Info < Base
 
 	end
 
-	 
-	def get_stream_helper(content,user_info)
+	private 
+	def release_stream_and_get_stream_helper(content,user_info)
 		stream = Stream.new(@login_info)
 		stream.release_stream content
 		stream.closeDriver 

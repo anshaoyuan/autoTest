@@ -10,6 +10,7 @@ class Config_Option
 	OTHER_USER_INFO={login_name:LoginName,pwd:LoginPWD,name:"谭志强",id:"310"}
 	
 	LOGIN_INFO={login_name:"lixj@visionet.com.cn",pwd:"123456",name:"李晓健",id:"311"}
+	INVITE_USER={login_name:"765309695@qq.com",pwd:"123456",name:"蒙娜丽莎不爱笑",id:"1096"}
 	ULR_= BASE_URL+"userRegiste!toSendEmailToUpdatePasswd.action"
 	
 	#team dir
