@@ -183,7 +183,7 @@ module Common
 		get_elements_by_type(:link_text,link_text,finder,&block)
 	end
 	def get_element_by_class_name(class_name,finder = @driver)
-		@wait.until{finder.find_elements(:class_name,class_name)}
+		@wait.until{finder.find_element(:class_name,class_name)}
 	end
 	def get_elements_by_class_name(class_name,finder = @driver,&block)
 		get_elements_by_type(:class_name,class_name,finder,&block)
