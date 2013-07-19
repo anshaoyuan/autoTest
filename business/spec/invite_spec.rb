@@ -14,7 +14,7 @@ describe Invite do
 		end
 
 		it "should not have custome page link" do
-			@inviter.has_custome_page_link?should be_false
+			@inviter.has_custome_page_link?.should be_false
 		end
 
 		it "cann't create a team " do 
