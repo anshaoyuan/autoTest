@@ -20,9 +20,9 @@ class Invite < Base
 	def is_link_disploy?(link_text)
 		begin
 			return false if get_element_by_link_text(link_text).nil?
-			return true
+			true
 		rescue Selenium::WebDriver::Error::TimeOutError => e1
-			return false
+			false
 		rescue Exception => e
 			@log.error("查找#{link_text}链接失败")
 			raise e
