@@ -15,7 +15,16 @@ class Invite < Base
 		is_link_disploy?("专页")
 	end
 
+	def visit_user_page(url)
+		@driver.get url
+		wait(5)
+		is_link_disploy?("Ta的分享")
+	end
 
+	def go_to_user_main_page
+		jump_to_my_space
+		is_link_disploy?("我的资料")
+	end
 	private 
 	def is_link_disploy?(link_text)
 		begin

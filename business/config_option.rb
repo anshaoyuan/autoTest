@@ -12,7 +12,7 @@ class Config_Option
 	LOGIN_INFO={login_name:"lixj@visionet.com.cn",pwd:"123456",name:"李晓健",id:"311"}
 	INVITE_USER={login_name:"765309695@qq.com",pwd:"123456",name:"蒙娜丽莎不爱笑",id:"1096"}
 	ULR_= BASE_URL+"userRegiste!toSendEmailToUpdatePasswd.action"
-	
+	NORMAL_USER_PAGE = BASE_URL+"webset!userInfo.action?vo.vestId=317"
 	#team dir
 	TEAM_ALL_URL=BASE_URL+"webShowteam!showteam.action"
 	VEST_ALL_URL = BASE_URL+"webUserdic.action"
@@ -107,5 +107,6 @@ class Config_Option
 
 	RIGHT_TEAM_DESCRIBE ="群组简介"
 	WRONG_TEAM_DESCRIBE_WITH_LOGN_DESCRIBE="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
 end
 

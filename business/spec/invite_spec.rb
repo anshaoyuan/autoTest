@@ -35,7 +35,13 @@ describe Invite do
 		it "can't find navigation tool" do 
 			expect{@inviter.get_element_by_css("div.well.well-large.findmore")}.to  raise_error(Selenium::WebDriver::Error::TimeOutError)
 		end
-		
+		it "can't visit normal user page "  do 
+			@inviter.visit_user_page(Config_Option::NORMAL_USER_PAGE).should be_false
+		end
+		it "can go to main page" do 
+			@inviter.go_to_user_main_page.should be_true
+
+		end
 	end
 
 	context "normal user " do 
@@ -59,6 +65,13 @@ describe Invite do
 
 		it " can find navigation tool " do 
 			@noraml_user_as_inviter.get_element_by_css("div.well.well-large.findmore").should_not be_nil
+		end
+		it "can visit normal user page " do
+			@noraml_user_as_inviter.visit_user_page(Config_Option::NORMAL_USER_PAGE).should be_true
+		end
+		it "can go to main page" do 
+			@noraml_user_as_inviter.go_to_user_main_page.should be_true
+
 		end
 	end
 end
