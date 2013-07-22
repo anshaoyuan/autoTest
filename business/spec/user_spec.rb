@@ -1,6 +1,6 @@
 #encoding:utf-8
 require 'spec_helper'
-require_relative '../config_option'
+
 describe User do
 	before(:all){@user = User.new(Config_Option::LOGIN_INFO) }
 	after(:all){@user.closeDriver}

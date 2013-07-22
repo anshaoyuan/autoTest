@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../config_option'
+
 describe Message_Info do
 	before(:all){ @message = Message_Info.new}
 	after(:all){ @message.closeDriver }

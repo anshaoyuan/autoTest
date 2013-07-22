@@ -1,6 +1,6 @@
 #encoding:utf-8
 require 'spec_helper'
-require_relative '../config_option'
+
 describe Search do
 	before(:all){@search = Search.new}
 	after(:all){@search.closeDriver}

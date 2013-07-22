@@ -1,6 +1,6 @@
 #encoding:utf-8
 require 'spec_helper'
-require_relative '../config_option'
+
 describe Invite do
 
 	context "invite user" do

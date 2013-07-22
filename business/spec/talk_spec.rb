@@ -1,6 +1,6 @@
 #encoding:utf-8
 require 'spec_helper'
-require_relative '../config_option'
+
 describe Talk do
 	before(:all){@talk = Talk.new }
 	after(:all){@talk.closeDriver}
