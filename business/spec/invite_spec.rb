@@ -17,24 +17,25 @@ describe Invite do
 			@inviter.has_custome_page_link?.should be_false
 		end
 
-		it "cann't create a team " do 
+		it "can't create a team " do 
 			expect {@inviter.get_element_by_link_text("创建群组")}.to  raise_error(Selenium::WebDriver::Error::TimeOutError)
 		end
-		it "cann't find active user panel" do
+		it "can't find active user panel" do
 			@inviter.get_element_by_id("index-active-users").text.should eq("")
 		end
-		it "cann't find active tag panel" do 
+		it "can't find active tag panel" do 
 			@inviter.get_element_by_id("hot-tag").text.should eq("")
 		end
-		it "cann't find apps panel" do 
+		it "can't find apps panel" do 
 			@inviter.get_element_by_id("hot-app").text.should eq("")
 		end
-		it "cann't invite other user" do
+		it "can't invite other user" do
 			@inviter.get_element_by_id("invite").text.should eq("")
 		end
-		it "cann't find navigation tool" do 
+		it "can't find navigation tool" do 
 			expect{@inviter.get_element_by_css("div.well.well-large.findmore")}.to  raise_error(Selenium::WebDriver::Error::TimeOutError)
 		end
+		
 	end
 
 	context "normal user " do 
