@@ -63,11 +63,13 @@ class CustomPage < Base
 	def del_all_config
 			del_btn = @wait.until{@driver.find_element(:id,"tabDel")}
 			del_btn.click
+			wait(3)
 			del_configs = @wait.until{@driver.find_elements(:css,"#leftab li a span i.icon-remove.icon-white")}
 			del_configs.each do |del|
 				del.click
-				wait(1)
+				wait(3)
 				do_confirm("确定")
+				wait(3)
 			end
 	end
 	def get_all_config

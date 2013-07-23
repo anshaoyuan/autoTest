@@ -197,7 +197,7 @@ class GroupManager < BaseDriver
 	end
 	def is_manager?
 		begin
-			get_element_by_css("#dismissBtn a.accordion-toggle")
+			get_element_by_link_text("成员管理")
 			true
 		rescue Exception => e
 			false

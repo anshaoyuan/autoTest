@@ -170,7 +170,7 @@ describe GroupManager do
 		end
 		context "add announcement " do
 			before(:each) {@manager.show_add_announcement_panel}
-			it "should be true when add a eligible announcement info" do
+			it "should be true when add a eligible announcement info",level1:true do
 				announcement_info= {title:@manager.getrandom,content:@manager.getrandom}
 				@manager.add_announcement(announcement_info).should be_true
 			end
@@ -178,7 +178,10 @@ describe GroupManager do
 		end
 
 		context "delete announcement" do
-			it "should be true when delete a announcement info " do
+			it "should be true when delete a announcement info ",level2:true do
+				@manager.show_add_announcement_panel
+				announcement_info= {title:@manager.getrandom,content:@manager.getrandom}
+				@manager.add_announcement(announcement_info)
 				@manager.delete_announcement.should be_true
 			end
 		end
