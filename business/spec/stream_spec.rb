@@ -28,16 +28,16 @@ describe Stream do
 		end
 	end
 	describe "delete stream from user share" do
-		it "should delete stream" do
+		it "should delete stream",level2:true do
 			@stream.delete_stream_from_my_share.should be_true
 		end
 	end
 	describe "store stream" do
-		it "should be true when store a stream " do
+		it "should be true when store a stream ",level2:true do
 			first_stream = @stream.get_first_title_first_stream
 			@stream.store_stream(first_stream).should be_true
 		end
-		it "should be true when store a new stream by other user release" do 
+		it "should be true when store a new stream by other user release",level2:true do 
 			@stream.release_stream("测试收藏")
 			stream_for_store = Stream.new(Config_Option::OTHER_USER_INFO)
 			first_stream = stream_for_store.get_first_title_first_stream

@@ -25,7 +25,7 @@ class Group < Base
 				goto_next_page_for_team(@action_btn,@team_div)
           end
 
-          if(@action_btn==nil)
+          if(@action_btn.nil?)
             @driver.error("Can't find the the button for join team!")
           end
           team_excute(@action_btn)

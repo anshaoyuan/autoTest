@@ -4,7 +4,7 @@ class BaseDriver < Base
 	def initialize(obj = Config_Option::LOGIN_INFO)
 		if obj.instance_of?Hash
 			super
-		elsif obj.class.superclass.to_s =~/Base/
+		elsif obj.is_a? Base
 			@login_info = obj.get_login_info
 			@driver = obj.getDriver
 			@log = obj.getLog

@@ -4,12 +4,12 @@ require 'spec_helper'
 describe User do
 	before(:all){@user = User.new(Config_Option::LOGIN_INFO) }
 	after(:all){@user.closeDriver}
-	it "should be true when follow a user " do
+	it "should be true when follow a user ",level1:true do
 		pending " search is wrong" do
 			@user.follow_user.should be_true
 		end
 	end
-	it "should be true when a fans follow curr user" do
+	it "should be true when a fans follow curr user",level1:true do
 		pending " search is wrong" do
 			@user.new_fans(Config_Option::OTHER_USER_INFO).should be_true
 		end

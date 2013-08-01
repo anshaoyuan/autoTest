@@ -7,26 +7,26 @@ describe GroupManager do
 	
 	context "basic team info for manage" do
 		before(:each){@manager.go_to_team_manager}
-		it "should be true when update team name with uniqueness" do
+		it "should be true when update team name with uniqueness",level1:true do
 			@manager.valid_teamName(@manager.getrandom).should be_true
 		end
-		it "should be false when update team name with empty " do
+		it "should be false when update team name with empty ",level1:true do
 			@manager.valid_teamName("").should be_false
 		end
-		it "should be false when update team name with special char" do
+		it "should be false when update team name with special char",level1:true do
 			@manager.valid_teamName(Config_Option::WRONG_TEAM_NAME_WITH_SPECIAL_CHAR).should be_false
 		end
-		it "should be false when update team name with long describe " do
+		it "should be false when update team name with long describe ",level1:true do
 			@manager.valid_teamName(Config_Option::WRONG_TEAM_NAME_WITH_LONG_DESCRIBE).should be_false
 		end
 
-		it "should be true when update team describe with right info" do
+		it "should be true when update team describe with right info",level1:true do
 			@manager.valid_teamDescribe(Config_Option::RIGHT_TEAM_DESCRIBE).should be_true
 		end
 		it "should be true when udpate team describe with empty" do
 			@manager.valid_teamDescribe("").should be_true
 		end
-		it "should be false when update team desribe with too long info" do
+		it "should be false when update team desribe with too long info",level1:true do
 			@manager.valid_teamDescribe(Config_Option::WRONG_TEAM_DESCRIBE_WITH_LOGN_DESCRIBE).should be_false
 		end
 		it "should be true when set team to use tag or not",level1:true do
@@ -104,7 +104,7 @@ describe GroupManager do
 			end
 			check_is_manager_by_search(@team_name).should be_true
 		end
-		it "should be true when dismiss a team by team manage" do
+		it "should be true when dismiss a team by team manage",level2:true do
 			@manager.dismiss_team
 			begin
 				search = Search.new
@@ -149,21 +149,21 @@ describe GroupManager do
 			@manager.get_my_first_team
 			@manager.go_to_group_announcement
 		end
-		context "valid announcement info when add a announcement" do
+		context "valid announcement info when add a announcement",level1:true do
 			before(:each) {@manager.show_add_announcement_panel}
 			it "should be false when title is more than 50 chars" do
 				@manager.valid_announcement_title(Config_Option::WRONG_SIGN_FOR_MORE_THAN_50_LENGTH).should be_false
 			end
-			it "should be false when title is empty" do
+			it "should be false when title is empty",level1:true do
 				@manager.valid_announcement_title(" ").should be_false
 			end
-			it "should be true when title is eligible" do 
+			it "should be true when title is eligible",level1:true do 
 				@manager.valid_announcement_title(@manager.getrandom).should be_true
 			end
-			it "should be false when announcement content is more than 50 chars" do
+			it "should be false when announcement content is more than 50 chars",level1:true do
 				@manager.valid_announcement_content(Config_Option::WRONG_SIGN_FOR_MORE_THAN_50_LENGTH).should be_false
 			end
-			it "should be true when announcement content is eligible" do
+			it "should be true when announcement content is eligible",level1:true do
 				@manager.valid_announcement_content(@manager.getrandom).should be_true
 			end
 
