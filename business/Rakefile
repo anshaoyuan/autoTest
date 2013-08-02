@@ -1,7 +1,9 @@
 require 'rspec/core/rake_task'
 require 'rake/clean'
 
-RSpec::Core::RakeTask.new(:spec)
+RSpec::Core::RakeTask.new(:spec) do|t|
+t.rspec_opts="--format documentation --out result.txt"
+end
 RSpec::Core::RakeTask.new(:spec_tag,:tag) do |t,task_args|
 	t.rspec_opts="--tag #{task_args[:tag]}"
 end
@@ -15,7 +17,18 @@ RSpec::Core::RakeTask.new(:level2_only) do |t,task_args|
 	t.rspec_opts="--tag level2 --format documentation --out result2.txt"
 end
 
-task :default => :spec
+task :default => :spec do 
+	begin
+		check_fail("result.txt","all.txt")
+	rescue Exception => e
+		open("all.txt") do |f|
+			while line = f.gets
+				puts line
+			end
+		end
+	end
+	
+end
 
 task :run2_only => :level2_only
 
