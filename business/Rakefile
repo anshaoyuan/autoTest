@@ -1,8 +1,7 @@
 require 'rspec/core/rake_task'
 require 'rake/clean'
-
 RSpec::Core::RakeTask.new(:spec) do|t|
-t.rspec_opts="--format documentation --out result.txt"
+		t.rspec_opts="--format documentation --out result.txt"
 end
 RSpec::Core::RakeTask.new(:spec_tag,:tag) do |t,task_args|
 	t.rspec_opts="--tag #{task_args[:tag]}"
@@ -16,8 +15,7 @@ end
 RSpec::Core::RakeTask.new(:level2_only) do |t,task_args|
 	t.rspec_opts="--tag level2 --format documentation --out result2.txt"
 end
-
-task :default => :spec do 
+task :check_all do 
 	begin
 		check_fail("result.txt","all.txt")
 	rescue Exception => e
@@ -26,9 +24,10 @@ task :default => :spec do
 				puts line
 			end
 		end
+		raise e
 	end
-	
 end
+task :default => :spec 
 
 task :run2_only => :level2_only
 
@@ -46,14 +45,16 @@ end
 def check_fail(target_file,output_file)
 	open(target_file) do |f|
 		File.delete(output_file) if File.exist?(output_file)
+		mark = false
+		level1_f = File.open(output_file,"a")
 		while line = f.gets
 			 if line[/^rspec/]  
-			 	level1_f = File.open(output_file,"a")
 			 	level1_f.puts line
-			 	
+			 	mark = true
 			end
 		end
-		
+		level1_f.close
+		File.delete(output_file) unless mark
 	end
-	raise "some examples is failure,see #{output_file} " if File.exist?(output_file)
+	raise "some examples is failing,see #{output_file} " if File.exist?(output_file)
 end
